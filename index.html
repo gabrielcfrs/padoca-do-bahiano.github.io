@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Padoca do Bahiano - Padarias artesanais com sabor da Bahia!">
+  <title>Padoca do Bahiano</title>
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Ícone da aba do navegador (favicon) — tamanho 32x32 igual ao do Claude -->
+  <link rel="icon" href="/img/padaria.ico" type="image/pn" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <!-- ============================================
+                               CARRINHO FLUTUANTE (fica fixo no canto da tela)
+                                      ============================================ -->
+
+  <!-- Botão do carrinho que fica no canto inferior direito -->
+  <button class="carrinho-fab" id="btn-carrinho" aria-label="Abrir carrinho">
+    🛒 <!-- Emoji de carrinho -->
+    <!-- Badge vermelha com a quantidade de itens -->
+    <span class="carrinho-badge" id="carrinho-badge">0</span>
+  </button>
+
+  <!-- Painel do carrinho (fica escondido até o usuário clicar) -->
+  <div class="carrinho-painel" id="carrinho-painel">
+
+    <!-- Cabeçalho do painel do carrinho -->
+    <div class="carrinho-header">
+      <h3>🛒 Seu Pedido</h3>
+      <!-- Botão X para fechar o painel -->
+      <button class="carrinho-fechar" id="carrinho-fechar">✕</button>
+    </div>
+
+    <!-- Lista de itens no carrinho (preenchida pelo JavaScript) -->
+    <ul class="carrinho-lista" id="carrinho-lista">
+      <!-- Os itens aparecem aqui dinamicamente -->
+    </ul>
+
+    <!-- Mensagem exibida quando o carrinho está vazio -->
+    <p class="carrinho-vazio" id="carrinho-vazio">Seu carrinho está vazio 😢</p>
+
+    <!-- Rodapé do carrinho: total e botão de pedido -->
+    <div class="carrinho-footer" id="carrinho-footer" style="display:none">
+      <!-- Linha do total -->
+      <div class="carrinho-total">
+        <span>Total:</span>
+        <!-- O valor é atualizado pelo JavaScript -->
+        <strong id="carrinho-total-valor">R$ 0,00</strong>
+      </div>
+      <!-- Botão que manda o pedido pelo WhatsApp -->
+      <a href="#" class="btn btn-whatsapp btn-pedido" id="btn-pedido" target="_blank">
+        💬 Fazer Pedido pelo WhatsApp
+      </a>
+      <!-- Botão para esvaziar o carrinho -->
+      <button class="btn-limpar" id="btn-limpar">🗑️ Limpar Carrinho</button>
+    </div>
+  </div>
+
+  <!-- Fundo escuro atrás do carrinho (fecha ao clicar) -->
+  <div class="carrinho-overlay" id="carrinho-overlay"></div>
+  <!-- HEADER / MENU DO TOPO -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!-- Logo com imagem sem fundo -->
+      <a href="#" class="logo">
+        <img src="/img/padaria-logo.png" alt="Padoca do Bahiano" class="logo-img">
+        <span class="logo-texto">Padoca do Bahiano</span>
+      </a>
+
+      <!-- Botão hambúrguer para celular -->
+      <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">☰</button>
+
+      <nav>
+        <ul class="nav-list" id="nav-list">
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#cardapio">Cardápio</a></li>
+          <li><a href="#bebidas">Bebidas</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <!-- HERO - SEÇÃO PRINCIPAL COM DESTAQUE -->
+    <section class="hero">
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <div class="badge-hero"> Feito com o capricho bahiano</div>
+        <h1>O Sabor que Veio da Bahia</h1>
+        <p>Feito na hora, pães fresquinhos e com o melhor sabor! 🥖</p>
+        <div class="hero-btns">
+          <a href="#cardapio" class="btn btn-principal">Ver Cardápio</a>
+          <a href="#contato" class="btn btn-secundario">Falar Conosco</a>
+        </div>
+      </div>
+      <!-- Logo grande flutuando no hero -->
+      <img src="/img/padaria-logo.png" alt="Padoca do Bahiano" class="hero-logo-flutuante">
+    </section>
+
+    <!-- SEÇÃO SOBRE -->
+    <section id="sobre" class="section">
+      <div class="container sobre-grid">
+        <div class="sobre-texto">
+          <span class="tag-secao">🥖 Nossa História</span>
+          <h2>Sobre a Padoca do Bahiano</h2>
+          <p>
+            Nascemos com a missão de trazer o capricho e o sabor da Bahia pra cada mordida.
+            Cada pão é preparado na hora, com ingredientes frescos, os melhores pães selecionados.
+          </p>
+          <div class="sobre-numeros">
+            <div class="numero-item">
+              <strong>+5.000</strong>
+              <span>Clientes felizes</span>
+            </div>
+            <div class="numero-item">
+              <strong>100%</strong>
+              <span>Artesanal</span>
+            </div>
+          </div>
+        </div>
+        <div class="sobre-imagem">
+          <img src="/img/juntos.png" alt="Padoca do Bahiano">
+          <div class="sobre-badge">Desde 2021 🥖</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO CARDÁPIO -->
+    <section id="cardapio" class="section section--alt">
+      <div class="container">
+        <span class="tag-secao">🥖 Nosso Menu</span>
+        <h2>Cardápio</h2>
+        <p class="secao-sub">Escolha o seu favorito!</p>
+
+        <!-- Filtros do cardápio -->
+        <div class="filtros">
+          <button class="filtro-btn ativo" data-filtro="todos">Todos</button>
+          <button class="filtro-btn" data-filtro="paes">Pães</button>
+          <button class="filtro-btn" data-filtro="frios">Frios</button>
+          <button class="filtro-btn" data-filtro="outros">Outros</button>
+        </div>
+
+        <ul class="cards" id="lista-itens"></ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO BEBIDAS -->
+    <section id="bebidas" class="section">
+      <div class="container">
+        <span class="tag-secao">Para Matar a Sede</span>
+        <h2>Bebidas</h2>
+        <p class="secao-sub">O complemento perfeito para sua refeição!</p>
+        <ul class="cards" id="lista-bebidas"></ul>
+      </div>
+    </section>
+
+    <!-- BANNER DESTAQUE -->
+    <section class="banner-destaque">
+      <div class="container banner-content">
+        <h2>Peça Agora pelo WhatsApp! 📲</h2>
+        <p>Entrega rápida na sua região. Mínimo R$ 15,00.</p>
+        <a href="https://wa.me/5511975383680" target="_blank" class="btn btn-whatsapp">
+          💬 Chamar no WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <!-- SEÇÃO CONTATO -->
+    <section id="contato" class="section section--alt">
+      <div class="container contato-grid">
+        <div class="contato-info">
+          <span class="tag-secao">📍 Fale Conosco</span>
+          <h2>Onde Estamos</h2>
+          <div class="info-item">
+            <span class="info-icone">📍</span>
+            <div>
+              <strong>Endereço</strong>
+              <p>Rua Amacás, 243 - Jardim Leonidas Moreira</p>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.9751998334177!2d-46.781678524839805!3d-23.641059178745145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5385d583c091%3A0xad498484ed2ec93!2sRua%20Amac%C3%A1s%2C%20243%20-%20Jardim%20Leonidas%20Moreira%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2005792-030!5e0!3m2!1spt-BR!2sbr!4v1778008050968!5m2!1spt-BR!2sbr"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade" id="mapas"></iframe>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icone">🕐</span>
+            <div>
+              <strong>Horário</strong>
+              <p>Seg–Sex: 11h às 23h</p>
+              <p>Sáb–Dom: 11h às 00h</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <i class="fab fa-whatsapp"></i></a>
+            <div>
+              <strong>WhatsApp</strong>
+              <p>(11) 97558-3680</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <i class="fab fa-instagram"></i></a>
+            <div>
+              <strong>Instagram</strong>
+              <p>@padoca_do_bahiano</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contato-form">
+          <h3>Mande uma Mensagem</h3>
+          <form class="form" novalidate id="form-contato">
+            <div class="field">
+              <label for="nome">Nome *</label>
+              <input id="nome" name="nome" type="text" required placeholder="Seu nome aqui">
+            </div>
+
+            <div class="field">
+              <label for="email">E-mail *</label>
+              <input id="email" name="email" type="email" required placeholder="seu@email.com">
+            </div>
+
+            <div class="field">
+              <label for="mensagem">Mensagem</label>
+              <textarea id="mensagem" name="mensagem" rows="4" placeholder="Escreva aqui..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-principal">Enviar Mensagem 🚀</button>
+            <p id="form-status" class="form-status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <section>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <img src="/img/padaria-logo.png" alt="Padaria do Bahiano" class="footer-logo">
+        <p>© <span id="ano"></span> Padaria do Bahiano. Todos os direitos reservados. 🥖</p>
+        <div class="footer-redes">
+          <a href="https://www.instagram.com/" target="_blank"> <i class="fab fa-instagram"></i></a>
+          <a href="https://www.whatsapp.com/download?lang=pt" target="_blank"> <i class="fab fa-whatsapp"></i></a>
+          <a href="https://www.facebook.com/?locale=pt_BR" target="_blank"> <i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+    </footer>
+
+  </section>
+
+  <!-- Scripts JavaScript -->
+  <section>
+    <script src="/js/dados.js"></script>
+    <script src="/js/app.js"></script>
+  </section>
+</body>
+
+</html>

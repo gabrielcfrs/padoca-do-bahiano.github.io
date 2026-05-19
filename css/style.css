@@ -1,0 +1,1155 @@
+/* =============================================
+   BAHIANO BURGER - CSS COMPLETO
+   Arquivo: css/style.css
+   ============================================= */
+
+/* ---------- VARIÁVEIS DE COR ---------- */
+/* Aqui você pode mudar as cores do site inteiro! */
+:root {
+  --cor-primaria: #afab6d;
+  /* Vermelho principal */
+  --cor-secundaria: #d80808;
+  /* Laranja */
+  --cor-amarelo: #ffffff;
+  /* Amarelo destaque */
+  --cor-fundo: #ddd9b7;
+  /* Fundo levemente creme */
+  --cor-fundo-alt: #867421;
+  /* Fundo escuro (seções alt) */
+  --cor-texto: #222;
+  /* Texto escuro */
+  --cor-branco: #ffffff;
+  --cor-whatsapp: #25d366;
+  /* Verde WhatsApp */
+  --sombra: 0 10px 30px rgba(0, 0, 0, 0.12);
+  --sombra-forte: 0 20px 50px rgba(0, 0, 0, 0.25);
+  --transicao: all 0.3s ease;
+  /* Velocidade das animações */
+  --raio: 16px;
+  /* Arredondamento dos cantos */
+}
+
+/* =============================================
+   SISTEMA DE CARRINHO
+   ============================================= */
+
+/* Botão flutuante do carrinho (canto inferior direito) */
+.carrinho-fab {
+  position: fixed;          /* Fica fixo mesmo ao rolar a página */
+  bottom: 30px;
+  right: 30px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;       /* Circular */
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+  color: white;
+  font-size: 1.8rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(214,40,40,0.5);
+  z-index: 500;             /* Fica na frente do conteúdo */
+  transition: var(--transicao);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carrinho-fab:hover {
+  transform: scale(1.12);
+  box-shadow: 0 12px 35px rgba(214,40,40,0.6);
+}
+
+/* Badge vermelha com a quantidade de itens */
+.carrinho-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--cor-amarelo); /* Amarelo para destacar */
+  color: #111;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Fundo escuro atrás do painel do carrinho */
+.carrinho-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5); /* Preto semitransparente */
+  z-index: 600;
+  display: none;              /* Escondido por padrão */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Quando o overlay está ativo (carrinho aberto) */
+.carrinho-overlay.ativo {
+  display: block;
+  opacity: 1;
+}
+
+/* Painel lateral do carrinho */
+.carrinho-painel {
+  position: fixed;
+  top: 0;
+  right: -420px;              /* Começa fora da tela (à direita) */
+  width: 420px;
+  max-width: 100vw;           /* No celular ocupa a tela toda */
+  height: 100vh;
+  background: white;
+  z-index: 700;               /* Fica na frente do overlay */
+  box-shadow: -10px 0 40px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;     /* Empilha: header, lista, footer */
+  transition: right 0.35s ease; /* Animação de deslizar */
+  overflow: hidden;
+}
+
+/* Quando o carrinho está aberto, desliza para dentro */
+.carrinho-painel.aberto { right: 0; }
+
+/* Cabeçalho do painel */
+.carrinho-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 2px solid #f0f0f0;
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+  color: white;
+}
+
+.carrinho-header h3 {
+  font-family: "Bangers", cursive;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  color: white;
+}
+
+/* Botão X para fechar o carrinho */
+.carrinho-fechar {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transicao);
+}
+
+.carrinho-fechar:hover { background: rgba(255,255,255,0.35); }
+
+/* Lista de itens no carrinho (scroll se tiver muitos) */
+.carrinho-lista {
+  list-style: none;
+  flex: 1;                  /* Ocupa o espaço restante */
+  overflow-y: auto;         /* Scroll vertical se necessário */
+  padding: 16px;
+}
+
+/* Cada item no carrinho */
+.carrinho-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  transition: var(--transicao);
+}
+
+.carrinho-item:hover { background: #fff5f0; }
+
+/* Foto do item no carrinho */
+.carrinho-item-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;           /* Não encolhe a imagem */
+}
+
+/* Texto (nome + preço) do item */
+.carrinho-item-info { flex: 1; }
+
+.carrinho-item-nome {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--cor-texto);
+}
+
+.carrinho-item-preco {
+  font-size: 0.85rem;
+  color: var(--cor-primaria);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Controles de quantidade (- número +) */
+.carrinho-item-qtd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botões de + e - */
+.btn-qtd {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-secundaria);
+  background: white;
+  color: var(--cor-secundaria);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transicao);
+  line-height: 1;
+}
+
+.btn-qtd:hover {
+  background: var(--cor-secundaria);
+  color: white;
+}
+
+/* Número da quantidade */
+.qtd-num {
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Mensagem "carrinho vazio" */
+.carrinho-vazio {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.95rem;
+  padding: 40px 20px;
+}
+
+/* Rodapé do carrinho: total e botões */
+.carrinho-footer {
+  padding: 20px 24px;
+  border-top: 2px solid #f0f0f0;
+  background: #fafafa;
+}
+
+/* Linha do total */
+.carrinho-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+}
+
+.carrinho-total strong {
+  font-family: "Bangers", cursive;
+  font-size: 1.8rem;
+  color: var(--cor-primaria);
+  letter-spacing: 1px;
+}
+
+/* Botão de pedido ocupa a largura toda */
+.btn-pedido {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  padding: 14px;
+}
+
+/* Botão para limpar o carrinho */
+.btn-limpar {
+  display: block;
+  width: 100%;
+  background: none;
+  border: 2px solid #ddd;
+  color: #999;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.btn-limpar:hover {
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+}
+
+/* ---------- RESET BÁSICO ---------- */
+/* Remove margens padrão do navegador */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- CORPO DA PÁGINA ---------- */
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* Impede scroll horizontal indesejado */
+}
+
+/* ---------- CONTAINER ---------- */
+/* Centraliza e limita largura do conteúdo */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* =============================================
+   HEADER - BARRA DO TOPO
+   ============================================= */
+.site-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  /* Efeito de vidro fosco */
+  border-bottom: 3px solid var(--cor-secundaria);
+  position: sticky;
+  /* Fica fixo no topo ao rolar */
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header-inner {
+  display: flex;
+  /* Coloca logo e nav lado a lado */
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+/* ---------- LOGO ---------- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: var(--transicao);
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  /* Aumenta levinho ao passar o mouse */
+}
+
+/* Imagem da logo SEM FUNDO */
+.logo-img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  /* A logo PNG já tem fundo transparente, não precisa de mais nada */
+}
+
+.logo-texto {
+  font-family: "Bangers", cursive;
+  /* Fonte estilo quadrinhos */
+  font-size: 1.6rem;
+  color: var(--cor-primaria);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+/* ---------- MENU DE NAVEGAÇÃO ---------- */
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: var(--cor-texto);
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 4px;
+  transition: var(--transicao);
+}
+
+/* Linha que aparece embaixo do link ao passar o mouse */
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: var(--cor-secundaria);
+  left: 0;
+  bottom: 0;
+  transition: var(--transicao);
+}
+
+.nav-list a:hover {
+  color: var(--cor-primaria);
+}
+
+.nav-list a:hover::after {
+  width: 100%;
+}
+
+/* ---------- BOTÃO MENU CELULAR ---------- */
+.menu-toggle {
+  display: none;
+  /* Escondido em telas grandes */
+  background: none;
+  border: 2px solid var(--cor-primaria);
+  color: var(--cor-primaria);
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 10px;
+  transition: var(--transicao);
+}
+
+.menu-toggle:hover {
+  background: var(--cor-primaria);
+  color: white;
+}
+
+/* =============================================
+   HERO - SEÇÃO PRINCIPAL (TOPO DA PÁGINA)
+   ============================================= */
+.hero {
+  position: relative;
+  height: 50vh;
+  /* 90% da altura da tela */
+  min-height: 50px;
+  background: url("../img/juntos.png") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Camada escura por cima da foto do hero */
+.overlay {
+  position: absolute;
+  inset: 0;
+  /* Cobre tudo: top, right, bottom, left = 0 */
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.65),
+      rgba(214, 40, 40, 0.3));
+}
+
+/* Conteúdo do hero fica na frente da overlay */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 0.9s ease;
+  /* Animação de entrada */
+}
+
+/* Badgezinho no topo do hero */
+.badge-hero {
+  display: inline-block;
+  background: var(--cor-amarelo);
+  color: #111;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 18px;
+  border-radius: 30px;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-family: "Bangers", cursive;
+  font-size: 4rem;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+/* Dois botões lado a lado no hero */
+.hero-btns {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* Em celular, vai pra baixo se não couber */
+}
+
+/* Logo grande flutuando no canto do hero */
+.hero-logo-flutuante {
+  position: absolute;
+  right: 5%;
+  bottom: 0;
+  height: 420px;
+  width: auto;
+  object-fit: contain;
+  z-index: 1;
+  animation: flutuar 3s ease-in-out infinite;
+  /* Animação de flutuar */
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+  opacity: 0.92;
+}
+
+/* =============================================
+   BOTÕES
+   ============================================= */
+.btn {
+  display: inline-block;
+  padding: 13px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: var(--transicao);
+  box-shadow: var(--sombra);
+}
+
+/* Botão vermelho principal */
+.btn-principal {
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+  color: white;
+}
+
+.btn-principal:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: var(--sombra-forte);
+}
+
+/* Botão contorno (transparente) */
+.btn-secundario {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-secundario:hover {
+  background: white;
+  color: var(--cor-primaria);
+  transform: translateY(-3px);
+}
+
+/* Botão verde WhatsApp */
+.btn-whatsapp {
+  background: var(--cor-whatsapp);
+  color: white;
+  font-size: 1.1rem;
+  padding: 15px 35px;
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+}
+
+/* =============================================
+   SEÇÕES GENÉRICAS
+   ============================================= */
+.section {
+  padding: 80px 0;
+}
+
+/* Seção com fundo alternativo (escuro) */
+.section--alt {
+  background: var(--cor-fundo-alt);
+  color: white;
+}
+
+.section--alt h2,
+.section--alt p {
+  color: white;
+}
+
+/* Tag pequena acima do título */
+.tag-secao {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-family: "Bangers", cursive;
+  font-size: 2.8rem;
+  color: var(--cor-primaria);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.secao-sub {
+  color: #888;
+  margin-bottom: 35px;
+  font-size: 1rem;
+}
+
+.section--alt .secao-sub {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* =============================================
+   SEÇÃO SOBRE
+   ============================================= */
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Duas colunas iguais */
+  gap: 60px;
+  align-items: center;
+}
+
+.sobre-texto h2 {
+  margin-top: 8px;
+}
+
+.sobre-texto p {
+  color: #555;
+  margin-bottom: 14px;
+}
+
+/* Números (ex: +5.000 clientes) */
+.sobre-numeros {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.numero-item strong {
+  display: block;
+  font-family: "Bangers", cursive;
+  font-size: 2rem;
+  color: var(--cor-primaria);
+  letter-spacing: 1px;
+}
+
+.numero-item span {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* Foto do hambúrguer no sobre */
+.sobre-imagem {
+  position: relative;
+}
+
+.sobre-imagem img {
+  width: 100%;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-forte);
+  transition: var(--transicao);
+}
+
+.sobre-imagem img:hover {
+  transform: scale(1.02);
+}
+
+/* Badge "Desde 2020" em cima da foto */
+.sobre-badge {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: var(--cor-amarelo);
+  color: #111;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  box-shadow: var(--sombra);
+  transform: rotate(5deg);
+  /* Levinho inclinado */
+}
+
+/* =============================================
+   CARDS DO CARDÁPIO
+   ============================================= */
+.cards {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 0;
+}
+
+.card {
+  background: var(--cor-branco);
+  border-radius: var(--raio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  transition: var(--transicao);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: var(--sombra-forte);
+}
+
+/* Wrapper da imagem com overflow hidden para o zoom funcionar */
+.card-img-wrap {
+  overflow: hidden;
+  height: 190px;
+}
+
+.card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  transition: var(--transicao);
+  display: block;
+}
+
+.card:hover img {
+  transform: scale(1.1);
+  /* Zoom na imagem ao passar o mouse */
+}
+
+.card-content {
+  padding: 18px;
+}
+
+.card-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--cor-texto);
+}
+
+.card-content p {
+  font-size: 0.88rem;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+.preco {
+  color: var(--cor-primaria);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* Tag de categoria no card */
+.card-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(214, 40, 40, 0.1);
+  color: var(--cor-primaria);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* =============================================
+   FILTROS DO CARDÁPIO
+   ============================================= */
+.filtros {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filtro-btn {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 8px 22px;
+  border-radius: 30px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.filtro-btn:hover,
+.filtro-btn.ativo {
+  background: var(--cor-secundaria);
+  border-color: var(--cor-secundaria);
+  color: white;
+}
+
+/* =============================================
+   BANNER DESTAQUE (CHAMADA WHATSAPP)
+   ============================================= */
+.banner-destaque {
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+  padding: 70px 20px;
+  text-align: center;
+  color: white;
+}
+
+.banner-content h2 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.banner-content p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 30px;
+}
+
+/* =============================================
+   SEÇÃO CONTATO
+   ============================================= */
+.contato-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Itens de informação (endereço, horário...) */
+.info-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  align-items: flex-start;
+}
+
+.info-icone {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  /* Não encolhe o ícone */
+}
+
+.info-item strong {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--cor-amarelo);
+}
+
+.info-item p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Formulário de contato */
+.contato-form h3 {
+  font-family: "Bangers", cursive;
+  font-size: 1.8rem;
+  color: var(--cor-amarelo);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  transition: var(--transicao);
+}
+
+.form input::placeholder,
+.form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: var(--cor-secundaria);
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Mensagem de sucesso/erro do formulário */
+.form-status {
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  min-height: 22px;
+}
+
+/* =============================================
+   FOOTER - RODAPÉ
+   ============================================= */
+.site-footer {
+  background: #111;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 35px 20px;
+  margin-top: 0;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.footer-logo {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.footer-redes {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-redes a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: var(--transicao);
+}
+
+.footer-redes a:hover {
+  color: var(--cor-secundaria);
+}
+
+/* =============================================
+   ANIMAÇÕES
+   ============================================= */
+
+/* Aparece subindo do baixo */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Flutua pra cima e pra baixo */
+@keyframes flutuar {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+/* Cards surgindo ao entrar na tela */
+.card {
+  animation: fadeUp 0.5s ease both;
+}
+
+/* =============================================
+   RESPONSIVO - CELULAR
+   (regras que entram em telas menores que 768px)
+   ============================================= */
+@media (max-width: 768px) {
+
+  /* Esconde logo flutuante no celular */
+  .hero-logo-flutuante {
+    display: none;
+  }
+
+  /* Título menor */
+  .hero h1 {
+    font-size: 2.4rem;
+  }
+
+  /* Mostra o botão hambúrguer */
+  .menu-toggle {
+    display: block;
+  }
+
+  /* Esconde o menu inicialmente no celular */
+  .nav-list {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+    box-shadow: var(--sombra);
+    gap: 15px;
+    z-index: 999;
+  }
+
+  /* Quando o menu estiver aberto, mostra */
+  .nav-list.aberto {
+    display: flex;
+  }
+
+  /* Seção sobre: uma coluna */
+  .sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .sobre-badge {
+    display: none;
+  }
+
+  .sobre-numeros {
+    gap: 15px;
+  }
+
+  /* Contato: uma coluna */
+  .contato-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+  }
+
+  .banner-content h2 {
+    font-size: 1.8rem;
+  }
+}
+  /* Botão "Adicionar ao carrinho" dentro do card */
+.btn-adicionar {
+  display: block;
+  /* Ocupa a linha toda */
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.btn-adicionar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(214, 40, 40, 0.4);
+}
+
+/* Animação "pulo" quando clica em adicionar */
+.btn-adicionar:active {
+  transform: scale(0.97);
+}
+/* =========================================
+   FIX MOBILE - TELA MEXENDO
+   ========================================= */
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Corrige viewport no celular */
+.hero {
+  min-height: 90dvh !important;
+  height: auto !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Corrige painel do carrinho */
+.carrinho-painel {
+  min-height: 100dvh;
+  height: 100dvh;
+  max-width: 100%;
+}
+
+/* Corrige imagens */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Corrige iframe do mapa */
+#mapas {
+  width: 100% !important;
+  max-width: 100%;
+  border-radius: 16px;
+  display: block;
+}
+
+/* Evita elementos ultrapassarem largura */
+section,
+div,
+main,
+header,
+footer {
+  max-width: 100%;
+}
+
+/* Corrige scroll lateral no Android */
+body {
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
+}
+
+/* Remove highlight azul ao tocar */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
